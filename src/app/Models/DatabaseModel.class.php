@@ -46,4 +46,18 @@ class DatabaseModel
         $pst->execute();
         return $pst->fetchAll(PDO::FETCH_CLASS, Article::class);
     }
+
+    public function getUser(string $id, string $login = null): User
+    {
+        $q = "SELECT * FROM maturao_users WHERE id=:id OR login=:login";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id", $id);
+        $pst->bindParam(":login", $login);
+
+        $pst->execute();
+        return $pst->fetchObject(User::class);
+    }
+
+
 }
