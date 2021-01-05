@@ -1,7 +1,8 @@
 {
   "description": "Ukázka composeru.",
   "require": {
-    "twig/twig" : ">=1.0"
+    "twig/twig" : ">=1.0",
+    "ext-pdo": "*"
   },
   "config": {
     "platform": {

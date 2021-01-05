@@ -38,6 +38,50 @@ class DatabaseModel
         return self::$instance;
     }
 
+    public function getUserById(string $id): ?User
+    {
+        $q = "SELECT * FROM maturao_user_view WHERE id=:id";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id", $id);
+
+        $pst->execute();
+
+        $user = $pst->fetchObject(User::class);
+        if ($user === false) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    public function getUserByLogin(string $login): ?User
+    {
+        $q = "SELECT * FROM maturao_user_view WHERE login=:login ";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":login", $login);
+
+        $pst->execute();
+
+        $user = $pst->fetchObject(User::class);
+        if ($user === false) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    public function createUser(User $newUser): void
+    {
+        $q = "INSERT INTO `maturao_user` (`login`, `password`, `id_role`) VALUES (:login, :password, 'author')";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":login", $newUser->login);
+        $pst->bindParam(":password", $newUser->password);
+        $pst->execute();
+    }
+
     public function getAllArticles(): array
     {
         $q = "SELECT * FROM " . TABLE_ARTICLE;
@@ -45,18 +89,6 @@ class DatabaseModel
         $pst = $this->pdo->prepare($q);
         $pst->execute();
         return $pst->fetchAll(PDO::FETCH_CLASS, Article::class);
-    }
-
-    public function getUser(string $id, string $login = null): User
-    {
-        $q = "SELECT * FROM maturao_users WHERE id=:id OR login=:login";
-
-        $pst = $this->pdo->prepare($q);
-        $pst->bindParam(":id", $id);
-        $pst->bindParam(":login", $login);
-
-        $pst->execute();
-        return $pst->fetchObject(User::class);
     }
 
 

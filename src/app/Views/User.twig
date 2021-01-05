@@ -1,0 +1,55 @@
+{% extends "Base.twig" %}
+
+{% import "Macros.twig" as macros %}
+
+{% block content %}
+    {% if not user %}
+        <div class="row">
+            <div class="col col-md-6">
+                <h3>Přihlášení</h3>
+                <form action="{{ macros.link("User", "Login") }}" method="post">
+                    <div class="form-group">
+                        <label for="loginField">Login</label>
+                        <input type="text" class="form-control" value="{{ login_user.login | e }}"
+                               id="loginField" placeholder="Login" name="login"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordField">Heslo</label>
+                        <input type="password" class="form-control" value=""
+                               id="passwordField" placeholder="Heslo" name="password"/>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Přihlásit">
+                </form>
+
+            </div>
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+            <div class="col col-md-6">
+                <h3>Registrace</h3>
+                <form action="{{ macros.link("User", "Register") }}" method="post">
+                    <div class="form-group">
+                        <label for="loginField">Login</label>
+                        <input type="text" class="form-control" value="{{ register_user.login | e }}"
+                               id="loginField" placeholder="Login" name="login"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordField">Heslo</label>
+                        <input type="password" class="form-control" value=""
+                               id="passwordField" placeholder="Heslo" name="password"/>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Registrovat">
+                </form>
+
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col">
+                Přihlášen: <b>{{ user.login }}</b><br/>
+                Role: <b>{{ user.role }}</b><br/>
+                <a class="btn btn-primary" role="button" href="{{ macros.link("User", "Logout") }}">Odhlásit</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
