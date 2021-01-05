@@ -7,8 +7,8 @@ use semestralkaweb\MVC\IActionResult;
 
 class HomeController extends ABaseController
 {
-    public function index() : IActionResult
+    public function index(): IActionResult
     {
-        echo "Index stranka";
+        return $this->viewResult("About", array("Title" => "O konferenci"));
     }
 }

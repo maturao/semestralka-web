@@ -82,14 +82,76 @@ class DatabaseModel
         $pst->execute();
     }
 
+    public function getAllUsers(): array
+    {
+        $q = "SELECT * FROM `maturao_user_view`";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->execute();
+        return $pst->fetchAll(PDO::FETCH_CLASS, User::class);
+    }
+
+    public function updateUserRole(User $user): void
+    {
+        $q = "UPDATE `maturao_user` SET id_role=:id_role WHERE id=:id";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id_role", $user->id_role);
+        $pst->bindParam(":id", $user->id);
+        $pst->execute();
+    }
+
+    public function getAllRoles(): array
+    {
+        $q = "SELECT * FROM `maturao_role`";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->execute();
+        return $pst->fetchAll(PDO::FETCH_CLASS, Role::class);
+    }
+
     public function getAllArticles(): array
     {
-        $q = "SELECT * FROM " . TABLE_ARTICLE;
+        $q = "SELECT * FROM `maturao_article_view`";
 
         $pst = $this->pdo->prepare($q);
         $pst->execute();
         return $pst->fetchAll(PDO::FETCH_CLASS, Article::class);
     }
 
+    public function getAllArticleStates(): array
+    {
+        $q = "SELECT * FROM `maturao_article_state`";
 
+        $pst = $this->pdo->prepare($q);
+        $pst->execute();
+        return $pst->fetchAll(PDO::FETCH_CLASS, ArticleState::class);
+    }
+
+    public function updateArticleState(Article $article): void
+    {
+        $q = "UPDATE `maturao_article` SET id_article_state=:id_article_state WHERE id=:id";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id_article_state", $article->id_article_state);
+        $pst->bindParam(":id", $article->id);
+        $pst->execute();
+    }
+
+    public function getArticleById(string $id) : ?Article
+    {
+        $q = "SELECT * FROM maturao_article_view WHERE id=:id";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id", $id);
+
+        $pst->execute();
+
+        $article = $pst->fetchObject(Article::class);
+        if ($article === false) {
+            return null;
+        }
+
+        return $article;
+    }
 }

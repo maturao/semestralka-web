@@ -1,0 +1,42 @@
+{% extends "Admin.twig" %}
+
+{% import "Macros.twig" as macros %}
+
+{% block administration %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Autor</th>
+            <th scope="col">Článek</th>
+            <th scope="col">Stav</th>
+        </tr>
+        </thead>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.user | e }}</td>
+                <td>
+                    <a href="{{ macros.link("Article", "Detail") }}&id={{ article.id }}">
+                        {{ article.display_name | e }}
+                    </a>
+                </td>
+                <td>
+                    <form class="form-inline" action="{{ macros.link("Article", "editArticleState") }}" method="post">
+                        <input type="hidden" name="id" value="{{ article.id }}"/>
+                        <label class="sr-only" for="idStateInput">Role</label>
+                        <select class="form-control mr-3" id="idStateInput" name="id_article_state">
+                            {% for state in article_states %}
+                                <option value="{{ state.id }}"
+                                        {% if article.id_article_state == state.id %}
+                                            selected
+                                        {% endif %}
+                                >{{ state.display_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" class="btn btn-primary"
+                               value="Změnir stav"/>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

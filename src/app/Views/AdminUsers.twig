@@ -1,0 +1,36 @@
+{% extends "Admin.twig" %}
+
+{% import "Macros.twig" as macros %}
+
+{% block administration %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Login</th>
+            <th scope="col">Role</th>
+        </tr>
+        </thead>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.login | e }}</td>
+                <td>
+                    <form class="form-inline" action="{{ macros.link("User", "editUserRole") }}" method="post">
+                        <input type="hidden" name="id" value="{{ user.id }}"/>
+                        <label class="sr-only" for="idRoleInput">Role</label>
+                        <select class="form-control mr-3" id="idRoleInput" name="id_role">
+                            {% for role in roles %}
+                                <option value="{{ role.id }}"
+                                        {% if user.id_role == role.id %}
+                                            selected
+                                        {% endif %}
+                                >{{ role.display_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" class="btn btn-primary"
+                               value="Změnit roli"/>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

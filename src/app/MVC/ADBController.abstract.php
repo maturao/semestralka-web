@@ -22,7 +22,7 @@ abstract class ADBController extends ABaseController
         $this->ulm = new UserLoginModel();
     }
 
-    protected function viewResultDB(string $view, string $title, string $modelName = null, $model = null): ViewResult
+    protected function viewResultDB(string $view, string $title, string $modelName = null, $model = null, ?array $additionalData = null): ViewResult
     {
         $data = array(
             "title" => $title,
@@ -35,6 +35,12 @@ abstract class ADBController extends ABaseController
 
         if ($model != null && $modelName != null) {
             $data[$modelName] = $model;
+        }
+
+        if ($additionalData != null) {
+            foreach ($additionalData as $key => $value) {
+                $data[$key] = $value;
+            }
         }
 
         return $this->viewResult($view, $data);

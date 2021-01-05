@@ -1,0 +1,17 @@
+{% extends "Base.twig" %}
+
+{% import "Macros.twig" as macros %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col">
+            <h1>{{ article.display_name | e }}</h1>
+            <h2>Abstrakt</h2>
+            <div class="text-justify">
+                {{ article.abstract | e }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
