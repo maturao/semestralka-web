@@ -1,0 +1,10 @@
+{% extends "Base.twig" %}
+
+{% block content %}
+    {% for article in articles %}
+        <div>
+            <h2>{{ article.display_name }}</h2>
+            {{ article.abstract }}
+        </div>
+    {% endfor %}
+{% endblock %}

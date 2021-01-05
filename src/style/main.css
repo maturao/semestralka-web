@@ -1,0 +1,9 @@
+.technology {
+    background: url("../img/technology.jpg") no-repeat center center;
+    -webkit-background-size: 100% 100%;
+    -moz-background-size: 100% 100%;
+    -o-background-size: 100% 100%;
+    background-size: 100% ;
+
+    text-shadow: black 0.1em 0.1em 0.2em;
+}
