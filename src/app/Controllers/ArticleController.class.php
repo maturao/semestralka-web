@@ -5,6 +5,7 @@ namespace semestralkaweb\Controllers;
 
 
 use semestralkaweb\Models\Article;
+use semestralkaweb\Models\Review;
 use semestralkaweb\MVC\ADBController;
 use semestralkaweb\MVC\ErrorMessages;
 use semestralkaweb\MVC\IActionResult;
@@ -27,17 +28,27 @@ class ArticleController extends ADBController
         return new ViewResult("AllArticle", $data);
     }
 
-    public function detail(): IActionResult
+    public function detail($id = null): IActionResult
     {
-        $id = Utils::getOrDefault($_GET, "id", null);
+        if ($id == null) {
+            $id = Utils::getOrDefault($_GET, "id", null);
+        }
 
         if ($id == null) {
             return new NotFoundResult();
         }
 
         $article = $this->db->getArticleById($id);
+        $reviews = $this->db->getArticleReviews($id);
+        $reviewers = $this->db->getArticlePossibleReviewers($id);
 
-        return $this->viewResultDB("ArticleDetail", "Článek", "article", $article);
+        $data = array(
+            "reviews" => $reviews,
+            "reviewers" => $reviewers,
+        );
+
+
+        return $this->viewResultDB("ArticleDetail", "Článek", "article", $article, $data);
     }
 
     public function adminArticles(): IActionResult
@@ -65,5 +76,15 @@ class ArticleController extends ADBController
         }
 
         return $this->adminArticles();
+    }
+
+    public function addReview(): IActionResult
+    {
+        /** @var Review $review */
+        $review = Utils::fillFromRequest(Review::class);
+
+        $this->db->createReview($review);
+
+        return $this->detail($review->id_article);
     }
 }

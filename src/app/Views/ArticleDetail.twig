@@ -12,6 +12,39 @@
                 {{ article.abstract | e }}
             </div>
         </div>
+
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Recenzent</th>
+                    <th scope="col">Obsah</th>
+                    <th scope="col">Technické zpracování</th>
+                    <th scope="col">Jazyk</th>
+                </tr>
+                </thead>
+                {% for review in reviews %}
+                    <tr>
+                        <td>{{ review.user | e }}</td>
+                        <td>{{ review.content_quality }}</td>
+                        <td>{{ review.technical_quality }}</td>
+                        <td>{{ review.language_quality }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <form class="form-inline" action="{{ macros.link("Article", "addReview") }}" method="post">
+                <input type="hidden" name="id_article" value="{{ article.id }}"/>
+                <label for="idUserInput">Recenzent</label>
+                <select class="form-control" id="idUserInput" name="id_user">
+                    {% for reviewer in reviewers %}
+                        <option value="{{ reviewer.id }}">{{ reviewer.login }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" class="btn btn-primary"
+                       value="Přidat recenzenta"/>
+            </form>
+        </div>
     </div>
 
 {% endblock %}

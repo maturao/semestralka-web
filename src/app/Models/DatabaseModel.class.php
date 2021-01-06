@@ -138,7 +138,7 @@ class DatabaseModel
         $pst->execute();
     }
 
-    public function getArticleById(string $id) : ?Article
+    public function getArticleById(string $id): ?Article
     {
         $q = "SELECT * FROM maturao_article_view WHERE id=:id";
 
@@ -153,5 +153,50 @@ class DatabaseModel
         }
 
         return $article;
+    }
+
+    public function getArticleReviews(string $id): array
+    {
+        $q = "SELECT * FROM maturao_review_view WHERE id_article=:id";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id", $id);
+
+        $pst->execute();
+
+        return $pst->fetchAll(PDO::FETCH_CLASS, Article::class);
+    }
+
+    public function getArticlePossibleReviewers($id): array
+    {
+        $q = "
+            SELECT
+                *
+            FROM
+                `maturao_user_view`
+            WHERE
+                id_role = 'reviewer' AND NOT EXISTS(
+                SELECT
+                    *
+                FROM
+                    maturao_review
+                WHERE
+                    id_article = :id AND id_user = `maturao_user_view`.`id`
+            )";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id", $id);
+        $pst->execute();
+        return $pst->fetchAll(PDO::FETCH_CLASS, User::class);
+    }
+
+    public function createReview(Review $review): void
+    {
+        $q = "INSERT INTO `maturao_review` (`id_user`, `id_article`) VALUES (:id_user, :id_article)";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id_user", $review->id_user);
+        $pst->bindParam(":id_article", $review->id_article);
+        $pst->execute();
     }
 }

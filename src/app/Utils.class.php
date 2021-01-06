@@ -12,12 +12,6 @@ class Utils
         return $array[$key];
     }
 
-    public static function httpNotFound()
-    {
-        http_response_code(404);
-        die();
-    }
-
     public static function fillFromRequest(string $class)
     {
         $object = new $class();
@@ -27,4 +21,16 @@ class Utils
         return $object;
     }
 
+    public static function link(?string $controller, ?string $action): string
+    {
+        if ($controller == null) {
+            $controller = "";
+        }
+
+        if ($action == null) {
+            $action = "";
+        }
+
+        return "./index.php?controller=$controller&action=$action";
+    }
 }

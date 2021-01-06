@@ -11,6 +11,7 @@ class NotFoundResult implements IActionResult
 {
     public function execute(): void
     {
-        Utils::httpNotFound();
+        http_response_code(404);
+        die();
     }
 }
