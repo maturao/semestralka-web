@@ -1,6 +1,7 @@
 /composer/vendor
 /db/model.mwb.bak
 /db/model.mwb
+/doc
 
 /.idea
 /src/upload
