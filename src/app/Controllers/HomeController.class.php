@@ -3,12 +3,13 @@
 namespace semestralkaweb\Controllers;
 
 use semestralkaweb\MVC\ABaseController;
+use semestralkaweb\MVC\ADBController;
 use semestralkaweb\MVC\IActionResult;
 
-class HomeController extends ABaseController
+class HomeController extends ADBController
 {
     public function index(): IActionResult
     {
-        return $this->viewResult("About", array("Title" => "O konferenci"));
+        return $this->viewResultDB("About", "O konferenci");
     }
 }

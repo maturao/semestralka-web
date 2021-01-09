@@ -1,10 +1,24 @@
 {% extends "Base.twig" %}
 
+{% import "Macros.twig" as macros %}
+
 {% block content %}
-    {% for article in articles %}
-        <div>
-            <h2>{{ article.display_name }}</h2>
-            {{ article.abstract }}
+    {% if user.login is not empty %}
+        <div class="row mb-3">
+            <div class="col">
+                <a class="btn btn-primary"
+                   href="{{ macros.link("Article", "createArticle") }}" >
+                    Nový příspěvěk
+                </a>
+            </div>
         </div>
-    {% endfor %}
+    {% endif %}
+    <div class="row">
+        {% for article in articles %}
+            <div class="col-md-6 col-12">
+                <h2>{{ article.display_name }}</h2>
+                {{ article.abstract }}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -4,6 +4,7 @@
 namespace semestralkaweb\Controllers;
 
 
+use DateTime;
 use semestralkaweb\Models\Article;
 use semestralkaweb\Models\Review;
 use semestralkaweb\MVC\ADBController;
@@ -20,12 +21,7 @@ class ArticleController extends ADBController
     {
         $articles = $this->db->getAllArticles();
 
-        $data = array(
-            "title" => "Article Index",
-            "articles" => $articles
-        );
-
-        return new ViewResult("AllArticle", $data);
+        return $this->viewResultDB("AllArticle", "Články", "articles", $articles);
     }
 
     public function detail($id = null): IActionResult
@@ -86,5 +82,61 @@ class ArticleController extends ADBController
         $this->db->createReview($review);
 
         return $this->detail($review->id_article);
+    }
+
+    public function deleteReview(): IActionResult
+    {
+        /** @var Review $review */
+        $id_review = Utils::getOrDefault($_GET, "id_review", null);
+        $id = Utils::getOrDefault($_GET, "id", null);
+
+        if ($id_review != null) {
+            $this->db->deleteReview($id_review);
+        }
+
+        return $this->detail($id);
+    }
+
+    public function createArticle(): IActionResult
+    {
+        /** @var Article $newArticle */
+        $newArticle = Utils::fillFromRequest(Article::class);
+
+        $pdfFile = Utils::getOrDefault($_FILES, "pdf", null);
+
+        if ($newArticle->display_name != null || $newArticle->abstract != null || $pdfFile != null) {
+            if ($newArticle->display_name == null) {
+                ErrorMessages::instance()->addMessage("Chybí název příspěvku");
+            }
+
+            if ($newArticle->abstract == null) {
+                ErrorMessages::instance()->addMessage("Chybí abstrakt příspěvku");
+            }
+
+            if ($pdfFile == null) {
+                ErrorMessages::instance()->addMessage("Chybí pdf soubor");
+            } else if (ErrorMessages::instance()->messageCount() == 0) {
+                if ($pdfFile["type"] != "application/pdf") {
+                    ErrorMessages::instance()->addMessage("Soubor není typu pdf");
+                } else {
+                    $date = new DateTime();
+                    $filename = "upload/article" . $date->getTimestamp() . ".pdf";
+                    $newArticle->pdf_file = $filename;
+                    if (!move_uploaded_file($pdfFile["tmp_name"], $filename)) {
+                        ErrorMessages::instance()->addMessage("Chyba uploadu");
+                    }
+                }
+            }
+
+            if (ErrorMessages::instance()->messageCount() > 0) {
+                return $this->viewResultDB("ArticleNew", "Nový příspěvěk", "article", $newArticle);
+            }
+
+            $newArticle->id_user = $this->ulm->getCurrentUser()->id;
+            $this->db->createArticle($newArticle);
+            return $this->index();
+        }
+
+        return $this->viewResultDB("ArticleNew", "Nový příspěvěk");
     }
 }

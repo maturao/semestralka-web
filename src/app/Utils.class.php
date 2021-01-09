@@ -4,7 +4,7 @@ namespace semestralkaweb;
 
 class Utils
 {
-    public static function getOrDefault(array $array, string $key, ?string $default): ?string
+    public static function getOrDefault($array, $key, $default)
     {
         if (empty($array[$key])) {
             return $default;

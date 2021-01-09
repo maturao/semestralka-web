@@ -3,6 +3,7 @@
 namespace semestralkaweb\Models;
 
 use PDO;
+use semestralkaweb\MVC\ErrorMessages;
 
 /**
  * Trida spravujici databazi.
@@ -197,6 +198,29 @@ class DatabaseModel
         $pst = $this->pdo->prepare($q);
         $pst->bindParam(":id_user", $review->id_user);
         $pst->bindParam(":id_article", $review->id_article);
+        $pst->execute();
+    }
+
+    public function deleteReview(string $id): void
+    {
+        $q = "DELETE FROM `maturao_review` WHERE id=:id";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id", $id);
+        $pst->execute();
+    }
+
+    public function createArticle(Article $newArticle)
+    {
+        $q = "INSERT INTO `maturao_article` (`id_user`, `display_name`, `abstract`, `pdf_file`, `id_article_state`) 
+        VALUES (:id_user, :display_name, :abstract, :pdf_file, 'reviewing')";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id_user", $newArticle->id_user);
+        $pst->bindParam(":display_name", $newArticle->display_name);
+        $pst->bindParam(":abstract", $newArticle->abstract);
+        $pst->bindParam(":pdf_file", $newArticle->pdf_file);
+
         $pst->execute();
     }
 }

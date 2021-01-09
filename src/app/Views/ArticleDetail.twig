@@ -5,7 +5,7 @@
 {% block content %}
 
     <div class="row">
-        <div class="col">
+        <div class="col-6">
             <h1>{{ article.display_name | e }}</h1>
             <h2>Abstrakt</h2>
             <div class="text-justify">
@@ -13,7 +13,8 @@
             </div>
         </div>
 
-        <div class="col">
+        <div class="col-6">
+            <h1>Recenzenti článku</h1>
             <table class="table">
                 <thead>
                 <tr>
@@ -21,6 +22,7 @@
                     <th scope="col">Obsah</th>
                     <th scope="col">Technické zpracování</th>
                     <th scope="col">Jazyk</th>
+                    <th scope="col">Úprava</th>
                 </tr>
                 </thead>
                 {% for review in reviews %}
@@ -29,14 +31,20 @@
                         <td>{{ review.content_quality }}</td>
                         <td>{{ review.technical_quality }}</td>
                         <td>{{ review.language_quality }}</td>
+                        <td>
+                            <a class="btn btn-primary"
+                               href="{{ macros.link("Article" , "deleteReview") }}&id_review={{ review.id }}&id={{ article.id }}">
+                                Smazat
+                            </a>
+                        </td>
                     </tr>
                 {% endfor %}
             </table>
 
             <form class="form-inline" action="{{ macros.link("Article", "addReview") }}" method="post">
                 <input type="hidden" name="id_article" value="{{ article.id }}"/>
-                <label for="idUserInput">Recenzent</label>
-                <select class="form-control" id="idUserInput" name="id_user">
+                <label class="sr-only" for="idUserInput">Recenzent</label>
+                <select class="form-control mr-3" id="idUserInput" name="id_user">
                     {% for reviewer in reviewers %}
                         <option value="{{ reviewer.id }}">{{ reviewer.login }}</option>
                     {% endfor %}

@@ -1,0 +1,30 @@
+{% extends "Base.twig" %}
+
+{% import "Macros.twig" as macros %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h1>Nový příspěvěk</h1>
+            <form id="articleForm" action="{{ macros.link("Article", "createArticle") }}"
+                  method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="nameField">Název</label>
+                    <input type="text" class="form-control" value="{{ article.display_name | e }}"
+                           id="nameField" placeholder="Název" name="display_name"/>
+                </div>
+
+                <label for="abstractField">Abstrakt</label>
+                <textarea class="form-control"
+                          id="abstractField" placeholder="Abstrakt"
+                          name="abstract">{{ article.abstract | e }}</textarea>
+
+                <label for="pdfField">Pdf</label>
+                <input type="file" class="form-control-file" id="pdfField" name="pdf"/>
+
+
+                <input type="submit" class="btn btn-primary mt-3" value="Vytvořit">
+            </form>
+        </div>
+    </div>
+{% endblock %}
