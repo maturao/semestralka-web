@@ -1,12 +1,12 @@
 <?php
 
-//// Pripojeni k databazi ////
+// pripojeni k databazi
 
-/** Adresa serveru. */
+/** adresa databazoveho serveru. */
 const DB_SERVER = "localhost";
-/** Nazev databaze. */
+/** nazev databaze. */
 const DB_NAME = "semestralka-web";
-/** Uzivatel databaze. */
+/** uzivatel */
 const DB_USER = "root";
-/** Heslo uzivatele databaze */
+/** heslo */
 const DB_PASS = "";

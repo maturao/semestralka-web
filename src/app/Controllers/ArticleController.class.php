@@ -11,7 +11,6 @@ use semestralkaweb\MVC\ADBController;
 use semestralkaweb\MVC\ErrorMessages;
 use semestralkaweb\MVC\IActionResult;
 use semestralkaweb\MVC\NotFoundResult;
-use semestralkaweb\MVC\ViewResult;
 use semestralkaweb\Utils;
 
 

@@ -2,7 +2,6 @@
 
 namespace semestralkaweb\Controllers;
 
-use semestralkaweb\MVC\ABaseController;
 use semestralkaweb\MVC\ADBController;
 use semestralkaweb\MVC\IActionResult;
 

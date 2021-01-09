@@ -8,7 +8,6 @@ use semestralkaweb\Models\Review;
 use semestralkaweb\MVC\ADBController;
 use semestralkaweb\MVC\ErrorMessages;
 use semestralkaweb\MVC\IActionResult;
-use semestralkaweb\MVC\RedirectResult;
 use semestralkaweb\Utils;
 
 
@@ -21,11 +20,6 @@ class ReviewController extends ADBController
         }
 
         $user = $this->ulm->getCurrentUser();
-
-        if ($user == null) {
-            ErrorMessages::instance()->addMessage("Nepřihlášený uživatel");
-            return new RedirectResult(Utils::link("Home", "index"));
-        }
 
         $reviews = $this->db->getUserReviews($user->id);
 

@@ -6,6 +6,7 @@ namespace semestralkaweb\Models;
 
 use semestralkaweb\MVC\ErrorMessages;
 
+
 class UserLoginModel
 {
     /** @var DatabaseModel $db Objekt pro spravu databaze */
@@ -29,12 +30,6 @@ class UserLoginModel
         }
     }
 
-    /**
-     * Prihlasi uzivatele
-     * @param string $login
-     * @param string $password
-     * @return bool
-     */
     public function userLogin(?string $login, ?string $password): bool
     {
         if ($login == null) {

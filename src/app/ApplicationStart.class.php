@@ -2,6 +2,7 @@
 
 namespace semestralkaweb;
 
+use ReflectionException;
 use ReflectionMethod;
 use semestralkaweb\MVC\IActionResult;
 use semestralkaweb\MVC\NotFoundResult;
@@ -36,13 +37,18 @@ class ApplicationStart
             return new NotFoundResult();
         }
 
-        $reflectionMethod = new ReflectionMethod($controller, $action);
+        try {
+            $reflectionMethod = new ReflectionMethod($controller, $action);
+            if (!$reflectionMethod->isPublic()) {
+                return new NotFoundResult();
+            }
 
-        if (!$reflectionMethod->isPublic()) {
-            return new NotFoundResult();
+            return $controller->$action();
+        } catch (ReflectionException $e) {
+            echo "Reflection exceptsion<br/>";
+            var_dump($e);
+            die();
         }
-
-        return $controller->$action();
     }
 }
 

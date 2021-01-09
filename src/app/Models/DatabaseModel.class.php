@@ -2,8 +2,9 @@
 
 namespace semestralkaweb\Models;
 
+
 use PDO;
-use semestralkaweb\MVC\ErrorMessages;
+
 
 /**
  * Trida spravujici databazi.

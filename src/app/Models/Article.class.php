@@ -1,6 +1,8 @@
 <?php
 
+
 namespace semestralkaweb\Models;
+
 
 class Article
 {
