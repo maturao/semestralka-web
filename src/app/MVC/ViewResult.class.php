@@ -11,6 +11,11 @@ use Twig\Error\SyntaxError;
 use Twig\Extension\DebugExtension;
 use Twig\Loader\FilesystemLoader;
 
+
+/**
+ * Vysledek, ktery ukaze view pomoci twigu
+ * @package semestralkaweb\MVC
+ */
 class ViewResult implements IActionResult
 {
     /** @var string $view název view (bez pripony) */
@@ -21,8 +26,8 @@ class ViewResult implements IActionResult
 
     /**
      * ViewResult constructor.
-     * @param string $view
-     * @param array $data
+     * @param string $view nazev view (bez pripony)
+     * @param array $data data pro view
      */
     public function __construct(string $view, array $data)
     {
@@ -30,6 +35,9 @@ class ViewResult implements IActionResult
         $this->data = $data;
     }
 
+    /**
+     * Preda data twig sablone
+     */
     public function execute(): void
     {
         $templatesDirectory = 'app/Views';

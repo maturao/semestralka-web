@@ -1,9 +1,22 @@
 <?php
 
+
 namespace semestralkaweb;
 
+
+/**
+ * Trida s uzitecnymi funkcemi
+ * @package semestralkaweb
+ */
 class Utils
 {
+    /**
+     * Vrati z pole hodnotu pod klicem, a nebo vychozi hodnotu
+     * @param $array
+     * @param $key
+     * @param $default
+     * @return mixed
+     */
     public static function getOrDefault($array, $key, $default)
     {
         if (empty($array[$key])) {
@@ -12,6 +25,11 @@ class Utils
         return $array[$key];
     }
 
+    /**
+     * Vyplni atributy tridy prijatymi hodnotami z http requestu
+     * @param string $class trida pro vyplneni dat
+     * @return mixed
+     */
     public static function fillFromRequest(string $class)
     {
         $object = new $class();
@@ -19,18 +37,5 @@ class Utils
             $object->$key = self::getOrDefault($_REQUEST, $key, null);
         }
         return $object;
-    }
-
-    public static function link(?string $controller, ?string $action): string
-    {
-        if ($controller == null) {
-            $controller = "";
-        }
-
-        if ($action == null) {
-            $action = "";
-        }
-
-        return "./index.php?controller=$controller&action=$action";
     }
 }

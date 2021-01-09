@@ -7,6 +7,10 @@ namespace semestralkaweb\Models;
 use semestralkaweb\MVC\ErrorMessages;
 
 
+/**
+ * Trida pro praci s prihlasenum uzivatelem
+ * @package semestralkaweb\Models
+ */
 class UserLoginModel
 {
     /** @var DatabaseModel $db Objekt pro spravu databaze */
@@ -19,6 +23,7 @@ class UserLoginModel
     private $userSessionKey = "logged_user_id";
 
     /**
+     * Spusti session
      * UserLoginModel constructor.
      */
     public function __construct()
@@ -30,6 +35,12 @@ class UserLoginModel
         }
     }
 
+    /**
+     * Pokusi se prihlasit uzivatele
+     * @param string|null $login logion
+     * @param string|null $password heslo
+     * @return bool zda se prihlaseni povedlo
+     */
     public function userLogin(?string $login, ?string $password): bool
     {
         if ($login == null) {
@@ -59,7 +70,7 @@ class UserLoginModel
     }
 
     /**
-     * Odhlasi soucasneho uzivatele.
+     * Odhlasi prihlaseneho uzivatele
      */
     public function userLogout()
     {
@@ -67,7 +78,8 @@ class UserLoginModel
     }
 
     /**
-     * Test, zda je nyni uzivatel prihlasen.
+     * Zjisti zda je uzivatel prihlasen
+     * @return bool zda je uzivatel prihlasen
      */
     public function isUserLogged(): bool
     {
@@ -76,7 +88,8 @@ class UserLoginModel
 
 
     /**
-     * Vrátí přihlášeného uživatele
+     * Vrati prihlaseneho uzivatele, nebo null
+     * @return User|null prihlazeny uzivatel
      */
     public function getCurrentUser(): ?User
     {
@@ -102,6 +115,11 @@ class UserLoginModel
         return $user;
     }
 
+    /**
+     * Zaregistruje uzivatele
+     * @param string|null $login login
+     * @param string|null $password heslo
+     */
     public function userRegister(?string $login, ?string $password): void
     {
         if ($login == null) {

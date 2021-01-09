@@ -13,9 +13,16 @@ use semestralkaweb\MVC\IActionResult;
 use semestralkaweb\MVC\NotFoundResult;
 use semestralkaweb\Utils;
 
-
+/**
+ * Controller, ktery obsluhuje stranky souvisejici s tabulkou `article`
+ * @package semestralkaweb\Controllers
+ */
 class ArticleController extends ADBController
 {
+    /**
+     * Vychozi akce; vrati stranku se vsemi prispevky
+     * @return IActionResult AllArticle view
+     */
     public function index(): IActionResult
     {
         $articles = $this->db->getAllAcceptedArticles();
@@ -23,6 +30,10 @@ class ArticleController extends ADBController
         return $this->viewResultDB("AllArticle", "Články", "articles", $articles);
     }
 
+    /**
+     * Vrati stranku se vsemi prispevky prihlaseneho uzivatele
+     * @return IActionResult UserArticles view
+     */
     public function userArticles(): IActionResult
     {
         if ($this->isRoleError("author")) {
@@ -39,6 +50,11 @@ class ArticleController extends ADBController
         return $this->viewResultDB("UserArticles", "Články", "articles", $articles);
     }
 
+    /**
+     * Vrati stranku s detailem prispevku
+     * @param null $id id prispevku
+     * @return IActionResult ArticleDetail view
+     */
     public function detail($id = null): IActionResult
     {
         if ($this->isRoleError("admin")) {
@@ -66,6 +82,10 @@ class ArticleController extends ADBController
         return $this->viewResultDB("ArticleDetail", "Článek", "article", $article, $data);
     }
 
+    /**
+     * Vrati stranku pro administraci clanku
+     * @return IActionResult AdminArticles view
+     */
     public function adminArticles(): IActionResult
     {
         if ($this->isRoleError("admin")) {
@@ -83,6 +103,11 @@ class ArticleController extends ADBController
         return $this->viewResultDB("AdminArticles", "Správa článků", null, null, $data);
     }
 
+    /**
+     * Akce, pro editaci stavu clanku.
+     * Vraci stranku pro administraci clanku
+     * @return IActionResult AdminArticles view
+     */
     public function editArticleState(): IActionResult
     {
         if ($this->isRoleError("admin")) {
@@ -106,6 +131,11 @@ class ArticleController extends ADBController
         return $this->adminArticles();
     }
 
+    /**
+     * Akce pro prideleni clanku recenzentovi - tedy vytvoreni nove recenze.
+     * Vraci stranku s detailem prispevku
+     * @return IActionResult ArticleDetail view
+     */
     public function addReview(): IActionResult
     {
         if ($this->isRoleError("admin")) {
@@ -120,6 +150,11 @@ class ArticleController extends ADBController
         return $this->detail($review->id_article);
     }
 
+    /**
+     * Akce pro mazani recenzi
+     * Vraci stranku s detailem prispevku
+     * @return IActionResult ArticleDetail view
+     */
     public function deleteReview(): IActionResult
     {
         if ($this->isRoleError("admin")) {
@@ -137,6 +172,11 @@ class ArticleController extends ADBController
         return $this->detail($id);
     }
 
+    /**
+     * Akce pro vytvoreni clanku.
+     * Vraci bud stranku pro vytvoreni clanku, nebo stranku s clanky uzivatele
+     * @return IActionResult ArticleNew view, UserArticles view
+     */
     public function createArticle(): IActionResult
     {
         if ($this->isRoleError("author")) {

@@ -11,13 +11,25 @@ use semestralkaweb\MVC\IActionResult;
 use semestralkaweb\Utils;
 
 
+/**
+ * Controller, ktery obsluhuje stranky souvisejici s tabulkou `user`
+ * @package semestralkaweb\Controllers
+ */
 class UserController extends ADBController
 {
+    /**
+     * Vraci stranku pro prihlaseni, registraci nebo odhlaseni
+     * @return IActionResult User view
+     */
     public function index(): IActionResult
     {
         return $this->viewResultDB("User", "Uživatel");
     }
 
+    /**
+     * Akce pro prihlaseni uzivatele
+     * @return IActionResult User view
+     */
     public function login(): IActionResult
     {
         /** @var User $user */
@@ -28,6 +40,10 @@ class UserController extends ADBController
         return $this->viewResultDB("User", "Uživatel", "login_user", $user);
     }
 
+    /**
+     * Akce pro odhlaseni uzivatele
+     * @return IActionResult User view
+     */
     public function logout(): IActionResult
     {
         if ($this->isRoleError("author")) {
@@ -39,6 +55,10 @@ class UserController extends ADBController
         return $this->index();
     }
 
+    /**
+     * Akce pro registraci uzivatele
+     * @return IActionResult User view
+     */
     public function register(): IActionResult
     {
         /** @var User $user */
@@ -49,6 +69,10 @@ class UserController extends ADBController
         return $this->viewResultDB("User", "Uživatel", "register_user", $user);
     }
 
+    /**
+     * Vrati stranku pro administraci uzivatelu
+     * @return IActionResult AdminUsers view
+     */
     public function adminUsers(): IActionResult
     {
         if ($this->isRoleError("admin")) {
@@ -61,6 +85,10 @@ class UserController extends ADBController
         return $this->viewResultDB("AdminUsers", "Správa uživatelů", "users", $users, array("roles" => $roles));
     }
 
+    /**
+     * Akce pro editaci role uzivatele
+     * @return IActionResult AdminUsers view
+     */
     public function editUserRole(): IActionResult
     {
         if ($this->isRoleError("admin")) {

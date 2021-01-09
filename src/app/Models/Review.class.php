@@ -4,6 +4,10 @@
 namespace semestralkaweb\Models;
 
 
+/**
+ * Reprezentuje objekt z tabulky `review`
+ * @package semestralkaweb\Models
+ */
 class Review
 {
     public $id;

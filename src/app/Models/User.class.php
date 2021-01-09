@@ -4,6 +4,10 @@
 namespace semestralkaweb\Models;
 
 
+/**
+ * reprezentuje objekt z tablky `user`
+ * @package semestralkaweb\Models
+ */
 class User
 {
     public $id;
