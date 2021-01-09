@@ -210,7 +210,7 @@ class DatabaseModel
         $pst->execute();
     }
 
-    public function createArticle(Article $newArticle)
+    public function createArticle(Article $newArticle): void
     {
         $q = "INSERT INTO `maturao_article` (`id_user`, `display_name`, `abstract`, `pdf_file`, `id_article_state`) 
         VALUES (:id_user, :display_name, :abstract, :pdf_file, 'reviewing')";
@@ -222,5 +222,15 @@ class DatabaseModel
         $pst->bindParam(":pdf_file", $newArticle->pdf_file);
 
         $pst->execute();
+    }
+
+    public function getAllUserArticles(string $id_user): array
+    {
+        $q = "SELECT * FROM `maturao_article_view` WHERE id_user=:id_user";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id_user", $id_user);
+        $pst->execute();
+        return $pst->fetchAll(PDO::FETCH_CLASS, Article::class);
     }
 }

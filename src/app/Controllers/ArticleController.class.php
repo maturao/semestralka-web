@@ -24,6 +24,18 @@ class ArticleController extends ADBController
         return $this->viewResultDB("AllArticle", "Články", "articles", $articles);
     }
 
+    public function userArticles(): IActionResult
+    {
+        $user = $this->ulm->getCurrentUser();
+        if ($user == null) {
+            return $this->index();
+        }
+
+        $articles = $this->db->getAllUserArticles($user->id);
+
+        return $this->viewResultDB("UserArticles", "Články", "articles", $articles);
+    }
+
     public function detail($id = null): IActionResult
     {
         if ($id == null) {

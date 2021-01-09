@@ -7,7 +7,7 @@
         <div class="row mb-3">
             <div class="col">
                 <a class="btn btn-primary"
-                   href="{{ macros.link("Article", "createArticle") }}" >
+                   href="{{ macros.link("Article", "createArticle") }}">
                     Nový příspěvěk
                 </a>
             </div>
@@ -16,8 +16,11 @@
     <div class="row">
         {% for article in articles %}
             <div class="col-md-6 col-12">
-                <h2>{{ article.display_name }}</h2>
-                {{ article.abstract }}
+                <h2>{{ article.display_name | e }}</h2>
+                <div>{{ article.abstract | e | nl2br }}</div>
+                <a target="_blank" href="./{{ article.pdf_file }}">
+                    pdf dokument
+                </a>
             </div>
         {% endfor %}
     </div>

@@ -9,17 +9,17 @@
             <form id="articleForm" action="{{ macros.link("Article", "createArticle") }}"
                   method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="nameField">Název</label>
+                    <label for="nameField">Název:</label>
                     <input type="text" class="form-control" value="{{ article.display_name | e }}"
                            id="nameField" placeholder="Název" name="display_name"/>
                 </div>
 
-                <label for="abstractField">Abstrakt</label>
-                <textarea class="form-control"
+                <label for="abstractField">Abstrakt:</label>
+                <textarea class="form-control" style="height: 300px"
                           id="abstractField" placeholder="Abstrakt"
                           name="abstract">{{ article.abstract | e }}</textarea>
 
-                <label for="pdfField">Pdf</label>
+                <label for="pdfField">Pdf:</label>
                 <input type="file" class="form-control-file" id="pdfField" name="pdf"/>
 
 
