@@ -234,7 +234,7 @@ class DatabaseModel
         return $pst->fetchAll(PDO::FETCH_CLASS, Article::class);
     }
 
-    public function getUserReviews($id):array
+    public function getUserReviews($id): array
     {
         $q = "SELECT * FROM maturao_review_view WHERE id_user=:id";
 
@@ -244,5 +244,34 @@ class DatabaseModel
         $pst->execute();
 
         return $pst->fetchAll(PDO::FETCH_CLASS, Review::class);
+    }
+
+    public function getReview($id): ?Review
+    {
+        $q = "SELECT * FROM `maturao_review_view` WHERE id=:id";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id", $id);
+
+        $pst->execute();
+
+        $review = $pst->fetchObject(Review::class);
+        if ($review === false) {
+            return null;
+        }
+
+        return $review;
+    }
+
+    public function editReview(Review $review): void
+    {
+        $q = "UPDATE `maturao_review` SET content_quality=:content_quality, technical_quality=:technical_quality, language_quality=:language_quality WHERE id=:id";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id", $review->id);
+        $pst->bindParam(":content_quality", $review->content_quality);
+        $pst->bindParam(":technical_quality", $review->technical_quality);
+        $pst->bindParam(":language_quality", $review->language_quality);
+        $pst->execute();
     }
 }

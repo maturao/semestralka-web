@@ -4,26 +4,37 @@
 
 {% block content %}
     <div class="row">
-        <div class="col">
+        <div class="col-md-6 col-12">
+            <h2>{{ article.display_name | e }}</h2>
+            <div>{{ article.abstract | e | nl2br }}</div>
+            <a target="_blank" href="./{{ article.pdf_file }}">
+                pdf dokument
+            </a>
+        </div>
+        <div class="col-md-6 col-12">
             <h1>Upravit recenzi</h1>
-            <form id="articleForm" action="{{ macros.link("Article", "createArticle") }}"
-                  method="post" enctype="multipart/form-data">
+            <form id="reviewForm" action="{{ macros.link("Review", "editReview") }}" method="post">
+                <input type="hidden" value="{{ review.id }}" name="id"/>
                 <div class="form-group">
-                    <label for="nameField">Název:</label>
-                    <input type="text" class="form-control" value="{{ article.display_name | e }}"
-                           id="nameField" placeholder="Název" name="display_name"/>
+                    <label for="contentField">Obsah:</label>
+                    <input type="number" min="0" max="100" step="1" class="form-control"
+                           value="{{ review.content_quality }}"
+                           id="contentField" name="content_quality"/>
+                </div>
+                <div class="form-group">
+                    <label for="technicalField">Technické zpracování:</label>
+                    <input type="number" min="0" max="100" step="1" class="form-control"
+                           value="{{ review.technical_quality }}"
+                           id="technicalField" name="technical_quality"/>
+                </div>
+                <div class="form-group">
+                    <label for="languageField">Jazyk:</label>
+                    <input type="number" min="0" max="100" step="1" class="form-control"
+                           value="{{ review.language_quality }}"
+                           id="languageField" name="language_quality"/>
                 </div>
 
-                <label for="abstractField">Abstrakt:</label>
-                <textarea class="form-control" style="height: 300px"
-                          id="abstractField" placeholder="Abstrakt"
-                          name="abstract">{{ article.abstract | e }}</textarea>
-
-                <label for="pdfField">Pdf:</label>
-                <input type="file" class="form-control-file" id="pdfField" name="pdf"/>
-
-
-                <input type="submit" class="btn btn-primary mt-3" value="Vytvořit">
+                <input type="submit" class="btn btn-primary mt-3" value="Upravit">
             </form>
         </div>
     </div>

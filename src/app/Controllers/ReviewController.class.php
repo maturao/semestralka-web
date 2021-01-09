@@ -4,6 +4,7 @@
 namespace semestralkaweb\Controllers;
 
 
+use semestralkaweb\Models\Review;
 use semestralkaweb\MVC\ADBController;
 use semestralkaweb\MVC\ErrorMessages;
 use semestralkaweb\MVC\IActionResult;
@@ -29,6 +30,17 @@ class ReviewController extends ADBController
 
     public function editReview(): IActionResult
     {
-        return $this->viewResultDB("EditReview", "Upravit recenzi");
+        $id = Utils::getOrDefault($_GET, "id", null);
+        if ($id != null) {
+            $review = $this->db->getReview($id);
+            $article = $this->db->getArticleById($review->id_article);
+            return $this->viewResultDB("EditReview", "Upravit recenzi", "review", $review, array("article" => $article));
+        }
+
+        /** @var Review $review */
+        $review = Utils::fillFromRequest(Review::class);
+        $this->db->editReview($review);
+
+        return $this->userReviews();
     }
 }
