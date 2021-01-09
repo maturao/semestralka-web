@@ -36,15 +36,21 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{ macros.link("Article") }}">Příspěvky</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ macros.link("Article", "userArticles") }}">Mé příspěvky</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ macros.link("Review", "userReviews") }}">Moje recenze</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ macros.link("User", "adminUsers") }}">Administrace</a>
-                </li>
+                {% if user.login is not empty %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ macros.link("Article", "userArticles") }}">Mé příspěvky</a>
+                    </li>
+                    {% if user.id_role == 'reviewer' or user.id_role == 'admin' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ macros.link("Review", "userReviews") }}">Moje recenze</a>
+                        </li>
+                    {% endif %}
+                    {% if user.id_role == 'admin' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ macros.link("User", "adminUsers") }}">Administrace</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
             </ul>
 
             <ul class="navbar-nav navbar-right">

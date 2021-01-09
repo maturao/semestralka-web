@@ -30,6 +30,10 @@ class UserController extends ADBController
 
     public function logout(): IActionResult
     {
+        if ($this->isRoleError("author")) {
+            return $this->redirectToHome();
+        }
+
         $this->ulm->userLogout();
 
         return $this->index();
@@ -47,6 +51,10 @@ class UserController extends ADBController
 
     public function adminUsers(): IActionResult
     {
+        if ($this->isRoleError("admin")) {
+            return $this->redirectToHome();
+        }
+
         $users = $this->db->getAllUsers();
         $roles = $this->db->getAllRoles();
 
@@ -55,6 +63,10 @@ class UserController extends ADBController
 
     public function editUserRole(): IActionResult
     {
+        if ($this->isRoleError("admin")) {
+            return $this->redirectToHome();
+        }
+
         /** @var User $user */
         $user = Utils::fillFromRequest(User::class);
 

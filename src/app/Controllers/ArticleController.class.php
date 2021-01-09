@@ -19,13 +19,17 @@ class ArticleController extends ADBController
 {
     public function index(): IActionResult
     {
-        $articles = $this->db->getAllArticles();
+        $articles = $this->db->getAllAcceptedArticles();
 
         return $this->viewResultDB("AllArticle", "Články", "articles", $articles);
     }
 
     public function userArticles(): IActionResult
     {
+        if ($this->isRoleError("author")) {
+            return $this->redirectToHome();
+        }
+
         $user = $this->ulm->getCurrentUser();
         if ($user == null) {
             return $this->index();
@@ -38,6 +42,10 @@ class ArticleController extends ADBController
 
     public function detail($id = null): IActionResult
     {
+        if ($this->isRoleError("admin")) {
+            return $this->redirectToHome();
+        }
+
         if ($id == null) {
             $id = Utils::getOrDefault($_GET, "id", null);
         }
@@ -61,6 +69,10 @@ class ArticleController extends ADBController
 
     public function adminArticles(): IActionResult
     {
+        if ($this->isRoleError("admin")) {
+            return $this->redirectToHome();
+        }
+
         $articles = $this->db->getAllArticles();
         $article_states = $this->db->getAllArticleStates();
 
@@ -74,6 +86,10 @@ class ArticleController extends ADBController
 
     public function editArticleState(): IActionResult
     {
+        if ($this->isRoleError("admin")) {
+            return $this->redirectToHome();
+        }
+
         /** @var Article $article */
         $article = Utils::fillFromRequest(Article::class);
 
@@ -88,6 +104,10 @@ class ArticleController extends ADBController
 
     public function addReview(): IActionResult
     {
+        if ($this->isRoleError("admin")) {
+            return $this->redirectToHome();
+        }
+
         /** @var Review $review */
         $review = Utils::fillFromRequest(Review::class);
 
@@ -98,6 +118,10 @@ class ArticleController extends ADBController
 
     public function deleteReview(): IActionResult
     {
+        if ($this->isRoleError("admin")) {
+            return $this->redirectToHome();
+        }
+
         /** @var Review $review */
         $id_review = Utils::getOrDefault($_GET, "id_review", null);
         $id = Utils::getOrDefault($_GET, "id", null);
@@ -111,6 +135,10 @@ class ArticleController extends ADBController
 
     public function createArticle(): IActionResult
     {
+        if ($this->isRoleError("author")) {
+            return $this->redirectToHome();
+        }
+
         /** @var Article $newArticle */
         $newArticle = Utils::fillFromRequest(Article::class);
 

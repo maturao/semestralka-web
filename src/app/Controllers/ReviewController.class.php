@@ -16,6 +16,10 @@ class ReviewController extends ADBController
 {
     public function userReviews(): IActionResult
     {
+        if ($this->isRoleError("reviewer")) {
+            return $this->redirectToHome();
+        }
+
         $user = $this->ulm->getCurrentUser();
 
         if ($user == null) {
@@ -30,6 +34,10 @@ class ReviewController extends ADBController
 
     public function editReview(): IActionResult
     {
+        if ($this->isRoleError("reviewer")) {
+            return $this->redirectToHome();
+        }
+
         $id = Utils::getOrDefault($_GET, "id", null);
         if ($id != null) {
             $review = $this->db->getReview($id);

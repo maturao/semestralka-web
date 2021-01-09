@@ -120,6 +120,15 @@ class DatabaseModel
         return $pst->fetchAll(PDO::FETCH_CLASS, Article::class);
     }
 
+    public function getAllAcceptedArticles(): array
+    {
+        $q = "SELECT * FROM `maturao_article_view` WHERE id_article_state='accepted' ";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->execute();
+        return $pst->fetchAll(PDO::FETCH_CLASS, Article::class);
+    }
+
     public function getAllArticleStates(): array
     {
         $q = "SELECT * FROM `maturao_article_state`";
@@ -236,7 +245,7 @@ class DatabaseModel
 
     public function getUserReviews($id): array
     {
-        $q = "SELECT * FROM maturao_review_view WHERE id_user=:id";
+        $q = "SELECT * FROM maturao_review_view WHERE id_user=:id AND id_article_state='reviewing'";
 
         $pst = $this->pdo->prepare($q);
         $pst->bindParam(":id", $id);
@@ -274,4 +283,6 @@ class DatabaseModel
         $pst->bindParam(":language_quality", $review->language_quality);
         $pst->execute();
     }
+
+
 }
