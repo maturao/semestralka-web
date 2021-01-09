@@ -179,7 +179,7 @@ class ArticleController extends ADBController
 
             $newArticle->id_user = $this->ulm->getCurrentUser()->id;
             $this->db->createArticle($newArticle);
-            return $this->index();
+            return $this->userArticles();
         }
 
         return $this->viewResultDB("ArticleNew", "Nový příspěvěk");

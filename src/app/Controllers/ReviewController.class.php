@@ -32,23 +32,40 @@ class ReviewController extends ADBController
         return $this->viewResultDB("UserReviews", "Moje recenze", "reviews", $reviews);
     }
 
-    public function editReview(): IActionResult
+    public function editReview(?string $id = null): IActionResult
     {
         if ($this->isRoleError("reviewer")) {
             return $this->redirectToHome();
         }
 
-        $id = Utils::getOrDefault($_GET, "id", null);
+        if ($id == null) {
+            $id = Utils::getOrDefault($_GET, "id", null);
+        }
         if ($id != null) {
-            $review = $this->db->getReview($id);
-            $article = $this->db->getArticleById($review->id_article);
-            return $this->viewResultDB("EditReview", "Upravit recenzi", "review", $review, array("article" => $article));
+            $reviewDb = $this->db->getReview($id);
+            $article = $this->db->getArticleById($reviewDb->id_article);
+            return $this->viewResultDB("EditReview", "Upravit recenzi", "review", $reviewDb, array("article" => $article));
         }
 
         /** @var Review $review */
         $review = Utils::fillFromRequest(Review::class);
-        $this->db->editReview($review);
+        if (0 > $review->content_quality || $review->content_quality > 100) {
+            ErrorMessages::instance()->addMessage("Hodnocení kvality obsahu musí být mezi 0 a 100");
+        }
+        if (0 > $review->technical_quality || $review->technical_quality > 100) {
+            ErrorMessages::instance()->addMessage("Hodnocení kvality technického zpracování musí být mezi 0 a 100");
+        }
+        if (0 > $review->language_quality || $review->language_quality > 100) {
+            ErrorMessages::instance()->addMessage("Hodnocení kvality jazyka musí být mezi 0 a 100");
+        }
 
+        if (ErrorMessages::instance()->messageCount() > 0) {
+            $reviewDb = $this->db->getReview($review->id);
+            $article = $this->db->getArticleById($reviewDb->id_article);
+            return $this->viewResultDB("EditReview", "Upravit recenzi", "review", $reviewDb, array("article" => $article));
+        }
+
+        $this->db->editReview($review);
         return $this->userReviews();
     }
 }

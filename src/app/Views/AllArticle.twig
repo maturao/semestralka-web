@@ -3,16 +3,6 @@
 {% import "Macros.twig" as macros %}
 
 {% block content %}
-    {% if user.login is not empty %}
-        <div class="row mb-3">
-            <div class="col">
-                <a class="btn btn-primary"
-                   href="{{ macros.link("Article", "createArticle") }}">
-                    Nový příspěvěk
-                </a>
-            </div>
-        </div>
-    {% endif %}
     <div class="row">
         {% for article in articles %}
             <div class="col-md-6 col-12">
