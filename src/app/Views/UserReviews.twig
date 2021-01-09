@@ -1,0 +1,40 @@
+{% extends "Base.twig" %}
+
+{% import "Macros.twig" as macros %}
+
+{% block content %}
+    <div class="row">
+        <div class="col">
+            <h1>
+                Moje recenze
+            </h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Článek</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Obsah</th>
+                    <th scope="col">Technické zpracování</th>
+                    <th scope="col">Jazyk</th>
+                    <th scope="col">Úprava</th>
+                </tr>
+                </thead>
+                {% for review in reviews %}
+                    <tr>
+                        <td>{{ review.article | e }}</td>
+                        <td>{{ review.user | e }}</td>
+                        <td>{{ review.content_quality }}</td>
+                        <td>{{ review.technical_quality }}</td>
+                        <td>{{ review.language_quality }}</td>
+                        <td>
+                            <a class="btn btn-primary"
+                               href="{{ macros.link("Review" , "editReview") }}&id={{ review.id }}">
+                                Upravit
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

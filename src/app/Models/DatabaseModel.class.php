@@ -165,7 +165,7 @@ class DatabaseModel
 
         $pst->execute();
 
-        return $pst->fetchAll(PDO::FETCH_CLASS, Article::class);
+        return $pst->fetchAll(PDO::FETCH_CLASS, Review::class);
     }
 
     public function getArticlePossibleReviewers($id): array
@@ -232,5 +232,17 @@ class DatabaseModel
         $pst->bindParam(":id_user", $id_user);
         $pst->execute();
         return $pst->fetchAll(PDO::FETCH_CLASS, Article::class);
+    }
+
+    public function getUserReviews($id):array
+    {
+        $q = "SELECT * FROM maturao_review_view WHERE id_user=:id";
+
+        $pst = $this->pdo->prepare($q);
+        $pst->bindParam(":id", $id);
+
+        $pst->execute();
+
+        return $pst->fetchAll(PDO::FETCH_CLASS, Review::class);
     }
 }
