@@ -23,31 +23,32 @@ abstract class ADBController extends ABaseController
         $this->ulm = new UserLoginModel();
     }
 
-    protected function userHasRole(string $role): bool
+    protected function userHasRole(string $id_role): bool
     {
         $user = $this->ulm->getCurrentUser();
+
         if ($user == null) {
             return false;
         }
 
-        if ($user->role == "admin") {
+        if ($user->id_role == "admin") {
             return true;
         }
 
-        if ($user->role == "reviewer") {
-            return $role == "reviewer" || $role == "author";
+        if ($user->id_role == "reviewer") {
+            return $id_role == "reviewer" || $id_role == "author";
         }
 
-        if ($user->role == "author") {
-            return $role == "author";
+        if ($user->id_role == "author") {
+            return $id_role == "author";
         }
 
         return false;
     }
 
-    protected function isRoleError(string $role): bool
+    protected function isRoleError(string $id_role): bool
     {
-        if ($this->userHasRole($role)) {
+        if ($this->userHasRole($id_role)) {
             return false;
         }
 

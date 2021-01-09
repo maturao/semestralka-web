@@ -24,7 +24,9 @@ class UserLoginModel
     {
         $this->db = DatabaseModel::getDatabaseModel();
         $this->em = ErrorMessages::instance();
-        session_start();
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
     }
 
     /**

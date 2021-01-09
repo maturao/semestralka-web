@@ -12,4 +12,5 @@ class Article
     public $pdf_file;
     public $id_article_state;
     public $article_state;
+    public $review_count;
 }

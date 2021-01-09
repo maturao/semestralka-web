@@ -8,6 +8,7 @@
         <tr>
             <th scope="col">Autor</th>
             <th scope="col">Článek</th>
+            <th scope="col">Hotové recenze</th>
             <th scope="col">Stav</th>
         </tr>
         </thead>
@@ -19,6 +20,7 @@
                         {{ article.display_name | e }}
                     </a>
                 </td>
+                <td>{{ article.review_count }}</td>
                 <td>
                     <form class="form-inline" action="{{ macros.link("Article", "editArticleState") }}" method="post">
                         <input type="hidden" name="id" value="{{ article.id }}"/>

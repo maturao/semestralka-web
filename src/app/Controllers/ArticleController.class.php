@@ -94,7 +94,12 @@ class ArticleController extends ADBController
         $article = Utils::fillFromRequest(Article::class);
 
         if ($article->id != null && $article->id_article_state != null) {
-            $this->db->updateArticleState($article);
+            $articleDb = $this->db->getArticleById($article->id);
+            if ($articleDb->review_count < 3) {
+                ErrorMessages::instance()->addMessage("Pro změnu stavu musí mít članék alespoň 3 hotové recenze");
+            } else {
+                $this->db->updateArticleState($article);
+            }
         } else {
             ErrorMessages::instance()->addMessage("Chyba při editaci stavu");
         }
